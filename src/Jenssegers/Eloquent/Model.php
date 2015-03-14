@@ -143,7 +143,7 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
 
             $relation = $caller['function'];
         }
-		
+
         // Check if it is a relation with an original model.
         if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
         {
@@ -155,7 +155,7 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
         // when combined with an "_id" should conventionally match the columns.
         if (is_null($foreignKey))
         {
-            $foreignKey = snake_case($relation).'_id';
+            $foreignKey = '_'.snake_case($relation);
         }
 
         $instance = new $related;
@@ -234,7 +234,7 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
         {
             $relation = $this->getBelongsToManyCaller();
         }
-		
+
         // Check if it is a relation with an original model.
         if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
         {
