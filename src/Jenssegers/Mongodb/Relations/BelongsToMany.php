@@ -97,7 +97,15 @@ class BelongsToMany extends EloquentBelongsToMany {
 		// First we need to attach any of the associated models that are not currently
 		// in this joining table. We'll spin through the given IDs, checking to see
 		// if they exist in the array of current ones, and if not we will insert.
-		$current = $this->parent->toArray()[$this->otherKey] ?: array();
+		try {
+			$otherKey = $this->parent->toArray()[$this->otherKey]
+		} catch (\ErrorException $e) {
+			if (strpos($e->getMessage(), 'Undefined index: _') === 0) {
+				$otherKey = null;
+			}
+		}
+
+		$current = $otherKey ?: array();
 
 		// See issue #256.
 		if ($current instanceof Collection) $current = $ids->modelKeys();

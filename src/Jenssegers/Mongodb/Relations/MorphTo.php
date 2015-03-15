@@ -17,7 +17,15 @@ class MorphTo extends EloquentMorphTo {
 			// For belongs to relationships, which are essentially the inverse of has one
 			// or has many relationships, we need to actually query on the primary key
 			// of the related models matching on the foreign key that's on a parent.
-			$this->query->where($this->otherKey, '=', $this->parent->toArray()[$this->foreignKey]);
+			try {
+				$foreignKey = $this->parent->toArray()[$this->foreignKey];
+			} catch (\ErrorException $e) {
+				if (strpos($e->getMessage(), 'Undefined index: _') === 0) {
+					$foreignKey = null;
+				}
+			}
+
+			$this->query->where($this->otherKey, '=', $foreignKey);
 		}
 	}
 
