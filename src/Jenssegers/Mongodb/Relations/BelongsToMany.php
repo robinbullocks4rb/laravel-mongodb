@@ -98,7 +98,7 @@ class BelongsToMany extends EloquentBelongsToMany {
 		// in this joining table. We'll spin through the given IDs, checking to see
 		// if they exist in the array of current ones, and if not we will insert.
 		try {
-			$otherKey = $this->parent->toArray()[$this->otherKey]
+			$otherKey = $this->parent->toArray()[$this->otherKey];
 		} catch (\ErrorException $e) {
 			if (strpos($e->getMessage(), 'Undefined index: _') === 0) {
 				$otherKey = null;
